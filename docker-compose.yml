@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: .
+    image: djazure:dev
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    volumes:
+      - .:/opt/code
+    environment:
+      - DJANGO_SU_USERNAME=admin
+      - DJANGO_SU_EMAIL=admin@admin.adm
+      - DJANGO_SU_PASSWORD=admin
+    command: sh -c "./manage.py migrate &&
+                    ./manage.py runserver 0.0.0.0:8000"
+  db:
+    image: postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=djazure
+      - POSTGRES_PASSWORD=djazure
+      - POSTGRES_DB=djazure
